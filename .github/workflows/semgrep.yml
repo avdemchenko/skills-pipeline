@@ -1,0 +1,47 @@
+# Broader Semgrep scan over scripts bundled with skills, using standard registry rulesets
+# (SkillEvaluator already runs Semgrep, but only with its own built-in policy).
+# Fails the check on any finding; the SARIF report is attached as a build artifact.
+name: Semgrep
+on:
+  pull_request:
+    paths: ["skills/**", ".semgrepignore", ".github/workflows/semgrep.yml"]
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  semgrep:
+    name: Semgrep scan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - name: Install Semgrep
+        run: python -m pip install --disable-pip-version-check "semgrep==1.182.0"
+
+      - name: Run Semgrep
+        run: |
+          semgrep scan skills \
+            --config p/security-audit \
+            --config p/secrets \
+            --config p/command-injection \
+            --metrics=off \
+            --error \
+            --sarif-output=semgrep.sarif \
+            --text
+
+      - name: Upload SARIF report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: semgrep-sarif
+          path: semgrep.sarif
+          if-no-files-found: ignore

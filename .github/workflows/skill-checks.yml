@@ -1,0 +1,28 @@
+# Official SkillEvaluator Tier 1 checks (bundle v1.0.1, copied unchanged except comments).
+# Source: https://github.com/NVIDIA/SkillEvaluator/blob/v1.0.1/ci/bundles/1.0.1/skill-checks.yml
+#
+# Runs inside a pinned image: SkillSpector 2.13.4, Semgrep 1.182.0 (built-in skill policy),
+# Gitleaks 8.30.0, Bandit 1.9.4, pip-audit 2.10.1 plus quality/schema/PII/Unicode/harness checks.
+# No LLM key needed. On PRs it scans only changed skills, on main it scans all of them.
+#
+# To upgrade: take workflow SHA and image digest from the new bundle's release.json.
+# Never replace them with `main` or `latest`.
+name: Skill checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  skills:
+    uses: NVIDIA/SkillEvaluator/.github/workflows/evaluate-skills.yml@c9369a7811bde083b550f2ac488222e8c388d7fd # v1.0.1
+    with:
+      image: ghcr.io/nvidia/skillevaluator-tier1@sha256:fbff256df8f760019539d442b7cb533d7ec50efab37f4482b7b670e2e4b4189a
+      paths: skills
+      min-score: 70
+      # Turn on after a reviewed baseline manifest lands on main.
+      security-baselines: false
+      scan-mode: auto
+      llm: false
