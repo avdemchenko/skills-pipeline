@@ -43,6 +43,9 @@ Design principles:
 
 On pull requests SkillEvaluator scans only the skills that changed. On `main` it scans every skill.
 
+To see the gate in action, read the [policy violation demos](docs/policy-violation-demos.md): six
+pull requests with intentionally non-compliant skills, each blocked by the pipeline.
+
 ## Repository layout
 
 ```
