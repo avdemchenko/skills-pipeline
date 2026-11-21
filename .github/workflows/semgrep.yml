@@ -2,9 +2,10 @@
 # (SkillEvaluator already runs Semgrep, but only with its own built-in policy).
 # Fails the check on any finding; the SARIF report is attached as a build artifact.
 name: Semgrep
+# No `paths` filter on purpose: this is a required check, and a path-filtered required check
+# never reports on unrelated PRs, which leaves them blocked.
 on:
   pull_request:
-    paths: ["skills/**", ".semgrepignore", ".github/workflows/semgrep.yml"]
   push:
     branches: [main]
   workflow_dispatch:
