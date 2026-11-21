@@ -1,4 +1,4 @@
-# Official SkillEvaluator Tier 1 checks (bundle v1.0.1, copied unchanged except comments).
+# Official SkillEvaluator Tier 1 checks (bundle v1.0.1, unchanged except for comments).
 # Source: https://github.com/NVIDIA/SkillEvaluator/blob/v1.0.1/ci/bundles/1.0.1/skill-checks.yml
 #
 # Runs inside a pinned image: SkillSpector 2.13.4, Semgrep 1.182.0 (built-in skill policy),

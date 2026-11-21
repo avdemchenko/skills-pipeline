@@ -1,0 +1,8 @@
+# Every change needs approval from a code owner.
+# Replace with a team (e.g. @org/skills-maintainers) once the repo moves to an organization.
+*                  @avdemchenko
+
+# Executable code and pipeline configuration: security review.
+/skills/**/scripts/ @avdemchenko
+/.github/           @avdemchenko
+/scripts/           @avdemchenko
